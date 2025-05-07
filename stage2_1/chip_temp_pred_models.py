@@ -8,6 +8,10 @@ from sklearn.discriminant_analysis import StandardScaler
 import numpy as np
 random.seed(42)
 
+
+
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 # ============================== out chip temp pred model ==============================
 """
     out chip temp pred model: 
@@ -115,7 +119,7 @@ inchip_pred_input_dim = 5
 inchip_pred_output_dim = 1
 inchip_pred_model = InChipTempPredModel(input_dim=inchip_pred_input_dim,
                                         output_dim=inchip_pred_output_dim)
-inchip_pred_model.load_state_dict(torch.load(inchip_model_weight_file_path))
+inchip_pred_model.load_state_dict(torch.load(inchip_model_weight_file_path, map_location=torch.device(device)))
 inchip_pred_model.eval()
 inchip_pred_scaler_x = joblib.load(inchip_pred_scaler_x_file_path)
 inchip_pred_scaler_y = joblib.load(inchip_pred_scaler_y_file_path)
@@ -147,17 +151,17 @@ def get_in_chip_temp(chip_len,
 
 ######################################## Random Forest In chip temp pred #############################################
 
-## RF model for in chip prediction need to retraining or loading later
+# RF model for in chip prediction need to retraining or loading later
 
 
-# RF_IC_model = joblib.load("../model_files/01_20/point_temp_RF_IC_model.pkl")
+RF_IC_model = joblib.load("../model_files/01_20/point_temp_RF_IC_model.pkl")
 
-# def get_in_chip_temp_RF_IC(chip_len, chip_wid, Convection_Film_Coefficient, Internal_Heat_Generation_Magnitude, distance_to_center): 
-#     temp_prediction = RF_IC_model.predict([[chip_len, chip_wid, Convection_Film_Coefficient, Internal_Heat_Generation_Magnitude, distance_to_center]])
+def get_in_chip_temp_RF_IC(chip_len, chip_wid, Convection_Film_Coefficient, Internal_Heat_Generation_Magnitude, distance_to_center): 
+    temp_prediction = RF_IC_model.predict([[chip_len, chip_wid, Convection_Film_Coefficient, Internal_Heat_Generation_Magnitude, distance_to_center]])
 
-#     return temp_prediction
+    return temp_prediction
 
-# def get_in_chip_temp_increment_RF_IC(chip_len, chip_wid, Convection_Film_Coefficient, Internal_Heat_Generation_Magnitude, distance_to_center, ambient_temp=35):
-#     temp_increment = RF_IC_model.predict([[chip_len, chip_wid, Convection_Film_Coefficient, Internal_Heat_Generation_Magnitude, distance_to_center]]) - ambient_temp
+def get_in_chip_temp_increment_RF_IC(chip_len, chip_wid, Convection_Film_Coefficient, Internal_Heat_Generation_Magnitude, distance_to_center, ambient_temp=35):
+    temp_increment = RF_IC_model.predict([[chip_len, chip_wid, Convection_Film_Coefficient, Internal_Heat_Generation_Magnitude, distance_to_center]]) - ambient_temp
 
-#     return temp_increment
+    return temp_increment

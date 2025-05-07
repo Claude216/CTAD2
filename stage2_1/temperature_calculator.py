@@ -125,6 +125,8 @@ def get_part_temp_cuda(x, y, anchor_point, chip, T0: float = 35.0):
     y_closest[y < y_c] = y_c
     y_closest[y > y_c + chip['wid']] = y_c + chip['wid']
     y_closest[(y >= y_c) & (y <= y_c + chip['wid'])] = y[(y >= y_c) & (y <= y_c + chip['wid'])]
+    
+    
     distance = torch.sqrt((x - x_closest)**2 + (y - y_closest)**2)
     # Vectorized temperature calculation
     chip_center_x = x_c + chip['len']/2
@@ -132,16 +134,18 @@ def get_part_temp_cuda(x, y, anchor_point, chip, T0: float = 35.0):
     distance_to_center = torch.sqrt((x - chip_center_x)**2 + (y - chip_center_y)**2)
 
     if in_chip: # if in the chip area
-        chip_center_x = x_c + chip['len']/2
-        chip_center_y = y_c + chip['wid']/2
-        distance_to_center = torch.sqrt((x - chip_center_x)**2 + (y - chip_center_y)**2)
-        result = ICM.get_single_in_chip_temp_cuda(
+        # chip_center_x = x_c + chip['len']/2
+        # chip_center_y = y_c + chip['wid']/2
+        # distance_to_center = torch.sqrt((x - chip_center_x)**2 + (y - chip_center_y)**2)
+        temp_incre = ctpm.get_in_chip_temp_increment_RF_IC(
             chip_len=chip['len'],
             chip_wid=chip['wid'],
             Convection_Film_Coefficient=chip['CFC'],
             Internal_Heat_Generation_Magnitude=chip['IHGM'],
             distance_to_center=distance_to_center
-        ) - T0 # only need the temperature increment for now
+        ) # only need the temperature increment for now
+    
+        result = torch.tensor(temp_incre[0], device=device, dtype=torch.float32)
     else: 
         distance = torch.clamp(distance, max=20, min=0)
         result = chip['A'] * torch.exp(-chip['k'] * distance)
