@@ -1,0 +1,8 @@
+
+[ERROR] cell 0 failed
+Traceback (most recent call last):
+  File "<stdin>", line 72, in <module>
+  File "CMA-ES02.ipynb::cell_0", line 7, in <module>
+ModuleNotFoundError: No module named 'utilities'
+
+

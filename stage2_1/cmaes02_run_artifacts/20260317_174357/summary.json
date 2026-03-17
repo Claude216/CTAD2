@@ -1,0 +1,19 @@
+{
+  "notebook": "D:\\code2025\\CTAD2_cuda\\CTAD2_cuda02_fit01_test0316\\stage2_1\\CMA-ES02.ipynb",
+  "run_dir": "D:\\code2025\\CTAD2_cuda\\CTAD2_cuda02_fit01_test0316\\stage2_1\\cmaes02_run_artifacts\\20260317_174357",
+  "log_path": "D:\\code2025\\CTAD2_cuda\\CTAD2_cuda02_fit01_test0316\\stage2_1\\cmaes02_run_artifacts\\20260317_174357\\execution.log",
+  "figure_dir": "D:\\code2025\\CTAD2_cuda\\CTAD2_cuda02_fit01_test0316\\stage2_1\\cmaes02_run_artifacts\\20260317_174357\\figures",
+  "figures": [],
+  "cells": [
+    {
+      "cell_index": 0,
+      "ok": false,
+      "seconds": 1.123
+    }
+  ],
+  "success": false,
+  "error": {
+    "cell_index": 0,
+    "traceback": "Traceback (most recent call last):\n  File \"<stdin>\", line 72, in <module>\n  File \"CMA-ES02.ipynb::cell_0\", line 7, in <module>\nModuleNotFoundError: No module named 'utilities'\n"
+  }
+}
